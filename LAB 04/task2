@@ -1,0 +1,65 @@
+#include<iostream>
+
+using namespace std;
+
+
+
+class car{
+	private :
+	string brand;
+	string model;
+	float price;
+	bool avail;
+	
+	public :
+	
+	car(){
+		
+		brand ="unknown";
+		model = "generic";
+		price = 0;
+		avail = 1;
+	}
+	car(string brandd, string m, float rent, bool a){
+		
+		brand =brandd;
+		model = m;
+		price = rent;
+		avail =  a;
+	}
+	
+	void setcar(string brandd, string m, float rent, bool a){
+		
+		brand =brandd;
+		model = m;
+		price = rent;
+		avail =  a;
+	}
+	
+	void request(int days){
+		
+		if(!avail){
+			cout << "not avialble, car already rented" << endl;
+		}else if(avail){
+			if(days>5 && days <10){
+				price = price*0.95;
+			}else if(days > 10 ){
+				price = price*0.9;
+			}
+			cout << "car available , booked" << endl;
+			cout << "rent price :" << price << endl;
+			
+			avail = 0;
+		}
+	}
+};
+
+int main (){
+	
+	car c1;
+	
+	c1.request(4);
+	
+	
+	return 0;
+}
