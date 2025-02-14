@@ -1,1 +1,83 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Library {
+private:
+    string bookList[100]; 
+    string borrowedBooks[100]; 
+    int totalBooks;
+    int borrowedCount;
+
+public:
+    
+    Library() {
+        totalBooks = 0;
+        borrowedCount = 0;
+    }
+
+   
+    void addBook(string bookName) {
+        if (totalBooks < 100) {
+            bookList[totalBooks] = bookName;
+            totalBooks++;
+            cout << "Successfully added: " << bookName << endl;
+        } else {
+            cout << " Can't add more books." << endl;
+        }
+    }
+
+    
+    void lendBook(string bookName) {
+        for (int i = 0; i < totalBooks; i++) {
+            if (bookList[i] == bookName) {
+                borrowedBooks[borrowedCount] = bookName;
+                borrowedCount++;
+                bookList[i] = ""; 
+                cout << "Book borrowed: " << bookName << endl;
+                return;
+            }
+        }
+        cout << bookName << " is not available." << endl;
+    }
+
+    void returnBook(string bookName) {
+        for (int i = 0; i < borrowedCount; i++) {
+            if (borrowedBooks[i] == bookName) {
+                bookList[totalBooks] = bookName;
+                totalBooks++;
+                borrowedBooks[i] = ""; 
+                cout << "Thank you for returning: " << bookName << endl;
+                return;
+            }
+        }
+        cout << "This book was not borrowed from our library!" << endl;
+    }
+
+    void displayBooks() {
+        cout << "Currently Available Books in the Library:" << endl;
+        for (int i = 0; i < totalBooks; i++) {
+            if (bookList[i] != "") {
+                cout << bookList[i] << endl;
+            }
+        }
+    }
+};
+
+int main() {
+    Library myLibrary;
+    
+    
+    myLibrary.addBook("The Great Gatsby");
+    myLibrary.addBook("To Kill a Mockingbird");
+    myLibrary.addBook("harry potter");
+    
+    myLibrary.displayBooks();
+    myLibrary.lendBook("harry potter");
+    myLibrary.displayBooks();
+    myLibrary.returnBook("harry potter");
+    myLibrary.displayBooks();
+    
+    return 0;
+}
 
