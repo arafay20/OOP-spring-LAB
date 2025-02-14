@@ -34,7 +34,7 @@ public:
     void refuel(float amount) {
         if (currentFuelLevel + amount > fuelCapacity) {
             currentFuelLevel = fuelCapacity; 
-            cout << "⛽ Tank is now full." << endl;
+            cout << " Tank is now full." << endl;
         } else {
             currentFuelLevel += amount; 
             cout << "Added " << amount << " liters. " << endl;
