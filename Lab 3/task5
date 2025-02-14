@@ -1,1 +1,94 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class musicplayer {
+private:
+    string playlist[100];
+    int song_count;
+    string currently_playing_song;
+
+public:
+    musicplayer() {
+        song_count = 0;
+        currently_playing_song = "";
+    }
+
+    void addsong(const string& song) {
+        if (song_count < 100) {
+            playlist[song_count] = song;
+            song_count++;
+            cout << "'" << song << "' added to the playlist." << endl;
+        } else {
+            cout << "playlist is full. cannot add more songs." << endl;
+        }
+    }
+
+    void removesong(const string& song) {
+        bool found = false;
+        for (int i = 0; i < song_count; i++) {
+            if (playlist[i] == song) {
+                found = true;
+                for (int j = i; j < song_count - 1; j++) {
+                    playlist[j] = playlist[j + 1];
+                }
+                song_count--;
+                cout << "'" << song << "' removed from the playlist." << endl;
+                break;
+            }
+        }
+        if (!found) {
+            cout << "'" << song << "' not found in the playlist." << endl;
+        }
+    }
+
+    void playsong(const string& song) {
+        bool found = false;
+        for (int i = 0; i < song_count; i++) {
+            if (playlist[i] == song) {
+                currently_playing_song = song;
+                cout << "now playing: '" << song << "'" << endl;
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            cout << "'" << song << "' is not in the playlist. please add it first." << endl;
+        }
+    }
+
+    void displayplaylist() {
+        if (song_count == 0) {
+            cout << "the playlist is empty." << endl;
+            return;
+        }
+
+        cout << "your playlist:" << endl;
+        for (int i = 0; i < song_count; i++) {
+            cout << i + 1 << ". " << playlist[i] << endl;
+        }
+
+        if (!currently_playing_song.empty()) {
+            cout << "now playing: " << currently_playing_song << endl;
+        }
+    }
+};
+
+int main() {
+    musicplayer myplayer;
+
+    myplayer.addsong("shape of you");
+    myplayer.addsong("blinding lights");
+    myplayer.addsong("levitating");
+
+    myplayer.displayplaylist();
+
+    myplayer.playsong("blinding lights");
+
+    myplayer.removesong("shape of you");
+
+    myplayer.displayplaylist();
+
+    return 0;
+}
 
