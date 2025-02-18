@@ -1,0 +1,89 @@
+#include <iostream>
+using namespace std;
+
+class Car {
+private:
+    string brand;
+    string model;
+    float price;
+    bool avail;
+    float revenue;
+
+public:
+    Car() {
+        brand = "Unknown";
+        model = "Generic";
+        price = 0.0;
+        avail = true;
+        revenue = 0.0;
+    }
+
+    Car(string brandd, string m, float rent, bool a) {
+        brand = brandd;
+        model = m;
+        price = rent;
+        avail = a;
+        revenue = 0.0;
+    }
+
+    Car(const Car &other) {
+        brand = other.brand;
+        model = other.model;
+        price = other.price;
+        avail = other.avail;
+        revenue = other.revenue;
+    }
+
+    ~Car() {
+        cout << "Car object for " << brand << " " << model << " is being destroyed." << endl;
+    }
+
+    void setCar(string brandd, string m, float rent, bool a) {
+        brand = brandd;
+        model = m;
+        price = rent;
+        avail = a;
+    }
+
+    void request(int days) {
+        if (!avail) {
+            cout << "Not available, car already rented." << endl;
+        } else {
+            float finalPrice = price * days;
+
+            if (days > 5 && days < 10) {
+                finalPrice *= 0.95;
+            } else if (days >= 10) {
+                finalPrice *= 0.90;
+            }
+
+            this->revenue += finalPrice;
+
+            cout << "Car available, booked for " << days << " days!" << endl;
+            cout << "Final Rent Price: $" << finalPrice << endl;
+
+            avail = false;
+        }
+    }
+
+    void display() {
+        cout << "Brand: " << brand << endl;
+		cout << "Model: " << model << endl;
+        cout << "Price: $" << price << endl;
+		cout << "Available: " << (avail ? "Yes" : "No") << endl;
+    }
+
+    void displayRevenue() {
+        cout << "Total Revenue for " << brand << " " << model << ": $" << revenue << endl;
+    }
+};
+
+int main() {
+    Car c1("Tesla", "Model 3", 100.0, true);
+
+    c1.display();
+    c1.request(7);
+    c1.displayRevenue();
+
+    return 0;
+}
