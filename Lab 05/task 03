@@ -1,0 +1,92 @@
+#include<iostream>
+
+using namespace std;
+
+
+class Employee {
+	
+	string name;
+	string designation;
+	string projects[10];
+	int numprojects;
+	
+	public :
+		
+		Employee(string name, string designation) : name(name), designation(designation), numprojects(0){
+		}
+		string getname(){
+			return name;
+		}
+		
+		void addProject(string projectTitle) {
+        if (numprojects < 10) {
+            projects[numprojects] = projectTitle;
+            numprojects++;
+        } else {
+            cout << "Cannot assign more projects to " << name << " (limit reached)." << endl;
+        }
+    }
+		void displayProjects() {
+			
+        cout << name << " is working on: ";
+        for (int i = 0; i < numprojects; i++) {
+            cout << projects[i];
+            if (i < numprojects - 1) cout << ", ";
+        }
+        cout << endl;
+    }
+};
+
+class Project {
+	private :
+		
+		string title;
+		string deadline;
+		Employee *emp;
+		string employees[10];
+		int numemployee;
+		
+	public :
+		
+		Project(string title, string deadline){
+			this->title = title;
+			this->deadline = deadline;
+			numemployee = 0;
+		}
+			
+		
+		void addemployees(Employee &e1){
+			emp = &e1;
+			if(numemployee >= 10){
+				cout << "max employees added !" << endl;
+			}else {
+				employees[numemployee] = emp->getname();
+			    numemployee++;
+			    e1.addProject(title);	
+		}
+			
+		}
+		
+		void display(){
+			cout << "project details :" << endl;
+			cout << "------------------------------" << endl;
+			cout << "title : " << title << endl;
+			cout << "deadline : " << deadline << endl;
+			cout << "num.of employees : " << numemployee << endl;
+			
+			for(int i = 0 ;i<numemployee ; i++){
+				cout << i+1 <<  ". " << employees[i] << " " << endl; 
+			}
+		}	 
+};
+
+int main () {
+	Employee e1("rafay", "senior sales manager");
+	Employee e2("talha", "accounting manager");
+	Project p1("procom", "25-03-25");
+	p1.addemployees(e1);
+	p1.addemployees(e2);
+	
+	p1.display();
+	
+}
