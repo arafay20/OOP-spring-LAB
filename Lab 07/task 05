@@ -1,0 +1,128 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Character {
+protected:
+    string characterID;
+    string name;
+    int level;
+    int healthPoints;
+    string weaponType;
+
+public:
+    Character(string id, string n, int lvl, int hp, string weapon = "")   : characterID(id), name(n), level(lvl), healthPoints(hp), weaponType(weapon) {}
+    
+    virtual void attack() {
+        cout << name << " attacks!" << endl;
+    }
+    
+    virtual void defend() {
+        cout << name << " defends!" << endl;
+    }
+    
+    virtual void displayStats() {
+        cout << "Character ID: " << characterID << endl;
+        cout << "Name: " << name << endl;
+        cout << "Level: " << level << endl;
+        cout << "Health Points: " << healthPoints << endl;
+        if (!weaponType.empty())
+            cout << "Weapon Type: " << weaponType << endl;
+    }
+};
+
+class Warrior : public Character {
+private:
+    int armorStrength;
+    int meleeDamage;
+
+public:
+    Warrior(string id, string n, int lvl, int hp, int armor, int damage, string weapon = "Sword")    : Character(id, n, lvl, hp, weapon), armorStrength(armor), meleeDamage(damage) {}
+    
+    void attack() override {
+        cout << name << " performs a powerful melee attack!" << endl;
+    }
+
+    void displayStats() {
+        Character::displayStats();
+        cout << "Armor Strength: " << armorStrength << endl;
+        cout << "Melee Damage: " << meleeDamage << endl;
+    }
+};
+
+class Mage : public Character {
+private:
+    int manaPoints;
+    int spellPower;
+
+public:
+    Mage(string id, string n, int lvl, int hp, int mana, int power, string weapon = "Staff")    : Character(id, n, lvl, hp, weapon), manaPoints(mana), spellPower(power) {}
+    
+    void defend() override {
+        cout << name << " conjures a magical barrier!" << endl;
+    }
+
+    void displayStats() {
+        Character::displayStats();
+        cout << "Mana Points: " << manaPoints << endl;
+        cout << "Spell Power: " << spellPower << endl;
+    }
+};
+
+class Archer : public Character {
+private:
+    int arrowCount;
+    int rangedAccuracy;
+
+public:
+    Archer(string id, string n, int lvl, int hp, int arrows, int accuracy, string weapon = "Bow")    : Character(id, n, lvl, hp, weapon), arrowCount(arrows), rangedAccuracy(accuracy) {}
+    
+    void attack() override {
+        cout << name << " fires an arrow with precision!" << endl;
+    }
+
+    void displayStats() {
+        Character::displayStats();
+        cout << "Arrow Count: " << arrowCount << endl;
+        cout << "Ranged Accuracy: " << rangedAccuracy << endl;
+    }
+};
+
+class Rogue : public Character {
+private:
+    int stealthLevel;
+    int agility;
+
+public:
+    Rogue(string id, string n, int lvl, int hp, int stealth, int agi, string weapon = "Dagger")   : Character(id, n, lvl, hp, weapon), stealthLevel(stealth), agility(agi) {}
+    
+    void displayStats() {
+        Character::displayStats();
+        cout << "Stealth Level: " << stealthLevel << endl;
+        cout << "Agility: " << agility << endl;
+    }
+};
+
+int main() {
+    Warrior w("W001", "Thor", 10, 100, 50, 30);
+    Mage m("M001", "Merlin", 12, 80, 100, 40);
+    Archer a("A001", "Legolas", 11, 90, 20, 85);
+    Rogue r("R001", "Shadow", 9, 70, 90, 95);
+
+    cout << "\nWarrior Stats:" << endl;
+    w.displayStats();
+    w.attack();
+
+    cout << "\nMage Stats:" << endl;
+    m.displayStats();
+    m.defend();
+
+    cout << "\nArcher Stats:" << endl;
+    a.displayStats();
+    a.attack();
+
+    cout << "\nRogue Stats:" << endl;
+    r.displayStats();
+    
+    return 0;
+}
