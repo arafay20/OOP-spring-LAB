@@ -1,0 +1,143 @@
+#include <iostream>
+using namespace std;
+
+class Device {
+protected:
+    int deviceID;
+    string deviceName;
+    bool status;
+
+public:
+    Device(int id, string name, bool stat) : deviceID(id), deviceName(name), status(stat) {}
+
+    virtual void turnOn() {
+	 status = true; 
+	}
+    virtual void turnOff() {
+	 status = false;
+	}
+    virtual bool getStatus() {
+	 return status; 
+	}
+
+    virtual void displayInfo() {
+        cout << "Device ID: " << deviceID << endl;
+        cout << "Device Name: " << deviceName << endl;
+        cout << "Status: " << (status ? "On" : "Off") << endl;
+    }
+
+    virtual ~Device() {}
+};
+
+class Light : public Device {
+private:
+    int brightnessLevel;
+    string colorMode;
+
+public:
+    Light(int id, string name, bool stat, int brightness, string mode)   : Device(id, name, stat), brightnessLevel(brightness), colorMode(mode) {}
+
+    void displayInfo() {
+        Device::displayInfo();
+        cout << "Brightness Level: " << brightnessLevel << "%" << endl;
+        cout << "Color Mode: " << colorMode << endl;
+    }
+};
+
+class Thermostat : public Device {
+private:
+    float currentTemperature;
+    float targetTemperature;
+    string mode;
+
+public:
+    Thermostat(int id, string name, bool stat, float currentTemp, float targetTemp, string m)   : Device(id, name, stat), currentTemperature(currentTemp), targetTemperature(targetTemp), mode(m) {}
+
+    bool getStatus() {
+        cout << "Current Temperature: " << currentTemperature << "°C" << endl;
+        return status;
+    }
+
+    void displayInfo() {
+        Device::displayInfo();
+        cout << "Current Temperature: " << currentTemperature << "°C" << endl;
+        cout << "Target Temperature: " << targetTemperature << "°C" << endl;
+        cout << "Mode: " << mode << endl;
+    }
+};
+
+class SecurityCamera : public Device {
+private:
+    int resolution;
+    bool recordingStatus;
+    bool nightVisionEnabled;
+
+public:
+    SecurityCamera(int id, string name, bool stat, int res, bool recStat, bool nightVision)    : Device(id, name, stat), resolution(res), recordingStatus(recStat), nightVisionEnabled(nightVision) {}
+
+    void turnOn() {
+        status = true;
+        recordingStatus = true;
+        cout << "Security Camera turned ON. Recording started automatically." << endl;
+    }
+
+    void displayInfo() {
+        Device::displayInfo();
+        cout << "Resolution: " << resolution << "p" << endl;
+        cout << "Recording Status: " << (recordingStatus ? "Recording" : "Not Recording") << endl;
+        cout << "Night Vision: " << (nightVisionEnabled ? "Enabled" : "Disabled") << endl;
+    }
+};
+
+class SmartPlug : public Device {
+private:
+    int powerConsumption;
+    int timerSetting;
+
+public:
+    SmartPlug(int id, string name, bool stat, int power, int timer)   : Device(id, name, stat), powerConsumption(power), timerSetting(timer) {}
+
+    void turnOff() {
+        status = false;
+        cout << "SmartPlug turned OFF. Power usage logged: " << powerConsumption << " watts." << endl;
+    }
+
+    void displayInfo() {
+        Device::displayInfo();
+        cout << "Power Consumption: " << powerConsumption << " watts" << endl;
+        cout << "Timer Setting: " << timerSetting << " minutes" << endl;
+    }
+};
+
+int main() {
+    Device *devicePtr;
+
+    Light light(1, "Living Room Light", true, 75, "Warm White");
+    Thermostat thermostat(2, "Home Thermostat", true, 22.5, 24.0, "Heating");
+    SecurityCamera camera(3, "Outdoor Camera", false, 1080, false, true);
+    SmartPlug plug(4, "Kitchen Smart Plug", true, 200, 30);
+
+    cout << "\n--- Light Information ---\n";
+    devicePtr = &light;
+    devicePtr->displayInfo();
+    cout << endl;
+
+    cout << "\n--- Thermostat Information ---\n";
+    devicePtr = &thermostat;
+    devicePtr->displayInfo();
+    thermostat.getStatus();
+    cout << endl;
+
+    cout << "\n--- Security Camera Information ---\n";
+    devicePtr = &camera;
+    devicePtr->displayInfo();
+    camera.turnOn();
+    cout << endl;
+
+    cout << "\n--- SmartPlug Information ---\n";
+    devicePtr = &plug;
+    devicePtr->displayInfo();
+    plug.turnOff();
+
+    return 0;
+}
