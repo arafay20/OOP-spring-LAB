@@ -1,0 +1,79 @@
+#include<iostream>
+
+using namespace std;
+
+class Manager;
+
+class Account {
+	
+	private :
+		
+		int accnum;
+		double bal;
+		
+	public :
+		 Account(int num, double b) : accnum(num), bal(b) {
+		 	
+		 }
+		 
+		 friend class Manager;
+		 friend  void transferfunds(Account &a, Account &b, double amount);
+};
+
+class Manager {
+	
+	public :
+		
+		void displaydetails(Account &obj){
+			cout << "Account number : " << obj.accnum <<endl;
+			cout << "Current balance : " << obj.bal << endl; 
+		}
+		
+		void deposit(Account &obj, double amount) {
+			
+			obj.bal+= amount;
+			cout << amount << " deposited succesfully . " << endl;
+		}
+		void withdraw(Account &obj, double amount) {
+			
+			if(amount < obj.bal) {
+				obj.bal-= amount;
+				cout << amount << " withdrawn succesfully . " << endl;
+			}else  	cout << "insufficient funds " << endl;
+		
+		}
+		
+		
+};
+
+void transferfunds(Account &a, Account &b, double amount){
+	if(amount > a.bal){
+		cout << "insufficient funds " << endl;
+		
+	}else if (amount < a.bal || amount == a.bal){
+		a.bal-=amount;
+		b.bal+=amount;
+		
+		cout << amount << " tranferred from " << a.accnum << " to  " << b.accnum << "succesfully" <<endl;
+	}
+}
+
+
+int main () {
+	
+	Account a1(1, 50000);
+	Account a2(2, 8000);
+	
+	Manager m;
+	m.deposit(a2, 5000);
+	m.withdraw(a2, 15000);
+	m.displaydetails(a1);
+	
+	transferfunds(a1, a2, 10000);
+	transferfunds(a1, a2, 70000);
+	
+	
+	
+	
+	return 0;
+}
