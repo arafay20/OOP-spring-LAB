@@ -1,0 +1,64 @@
+#include <iostream>
+using namespace std;
+
+
+class Patient {
+protected:
+    string name;
+    string id;
+
+public:
+    Patient(string na, string i) : name(na), id(i) {}
+
+    virtual void displayTreatment() = 0;
+    virtual void calculateCost() = 0;
+
+    virtual ~Patient() {}
+};
+
+
+class Inpatient : public Patient {
+public:
+    Inpatient(string na, string i) : Patient(na, i) {}
+
+    void displayTreatment() override {
+        cout << "This is inpatient named " << name << " with id " << id << endl;
+    }
+
+    void calculateCost() override {
+        cout << "Calcualting the cost of Inpatient" << endl;
+    }
+};
+
+
+class Outpatient : public Patient {
+public:
+    Outpatient(string na, string i) : Patient(na, i) {}
+
+    void displayTreatment() override {
+        cout << "This is outpatient named " << name << " with id " << id << endl;
+    }
+
+    void calculateCost() override {
+        cout << "Calcualting the cost of Outpatient " << endl;
+    }
+};
+
+
+int main() {
+    Inpatient ip("Abdul", "0800");
+    Outpatient op("Rafay", "0740");
+
+    Patient* p1 = &ip;
+    p1->displayTreatment();
+    p1->calculateCost();
+    
+    p1 = &op;
+    
+    cout << "----------------------------" << endl;
+
+    p1->displayTreatment();
+    p1->calculateCost();
+
+    return 0;
+}
