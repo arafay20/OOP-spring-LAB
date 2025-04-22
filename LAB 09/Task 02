@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+class MenuItem {
+protected:
+    string Name;
+    double price;
+
+public:
+    MenuItem(string n, double p) : Name(n), price(p) {}
+
+    virtual void showDetails() = 0;
+    virtual void prepare() = 0;
+
+    virtual ~MenuItem() {}
+};
+
+
+class Appetizer : public MenuItem {
+
+public:
+    Appetizer(string n, double p) : MenuItem(n, p) {}
+
+    void showDetails() override {
+        cout << "Appetizer : " << Name << endl ;
+		cout << "Price: $" << price << endl;
+    }
+
+    void prepare() override {
+        cout << "Appetizer \"" << Name << "\" is being prepared." << endl;
+    }
+};
+
+
+class MainCourse : public MenuItem {
+public:
+    MainCourse(string n, double p) : MenuItem(n, p) {}
+
+    void showDetails() override {
+        cout << "Maincourse : " << Name << endl ;
+		cout << "Price: $" << price << endl;
+    }
+
+    void prepare() override {
+        cout << "Main Course \"" << Name << "\" is being prepared." << endl;
+    }
+};
+
+
+int main() {
+    Appetizer ap("Fish", 2100);
+    MainCourse ma("Steak", 2999.99);
+
+    MenuItem* d1 = &ap;
+
+    d1->showDetails();
+    d1->prepare();
+    
+    d1 = &ma;
+    cout << "--------------------------" << endl;
+
+    d1->showDetails();
+    d1->prepare();
+
+    return 0;
+}
