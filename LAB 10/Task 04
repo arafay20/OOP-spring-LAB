@@ -1,0 +1,63 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+using namespace std;
+
+int main() {
+    ifstream ifile("vehicles.txt");
+    string line;
+
+    if (ifile.is_open()) {
+        while (getline(ifile, line)) {
+            if (line.empty() || line[0] == '#') continue;
+
+            istringstream iss(line);
+            string type, id, name, yearStr, extraData, certification;
+
+            getline(iss, type, ',');
+            getline(iss, id, ',');
+            getline(iss, name, ',');
+            getline(iss, yearStr, ',');
+            getline(iss, extraData, ',');
+            getline(iss, certification, ',');
+
+            // Safely convert Year to integer
+            int year = 0;
+            try {
+                year = stoi(yearStr);
+            } catch (exception &e) {
+                cout << "ID: " << id << " - Invalid year: " << yearStr << endl;
+                continue; // skip this record
+            }
+
+            // Parse ExtraData based on Type
+            size_t colonPos = extraData.find(':');
+            if (colonPos != string::npos) {
+                string valueStr = extraData.substr(colonPos + 1);
+
+                try {
+                    if (type == "AutonomousCar") {
+                        float softwareVersion = stof(valueStr);
+                        cout << "ID: " << id << ", Software Version: " << softwareVersion << endl;
+                    } else if (type == "ElectricVehicle") {
+                        int batteryCapacity = stoi(valueStr);
+                        cout << "ID: " << id << ", Battery Capacity: " << batteryCapacity << endl;
+                    } else {
+                        cout << "ID: " << id << ", Type: " << type << " (No ExtraData parsed)" << endl;
+                    }
+                } catch (exception &e) {
+                    cout << "ID: " << id << " - Invalid ExtraData number: " << valueStr << endl;
+                }
+            } else {
+                cout << "ID: " << id << " - Malformed ExtraData (no colon): " << extraData << endl;
+            }
+        }
+
+        ifile.close();
+    } else {
+        cout << "Unable to open the file" << endl;
+    }
+
+    return 0;
+}
