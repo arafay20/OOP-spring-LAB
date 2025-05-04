@@ -1,0 +1,31 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main() {
+    ofstream outFile("sensor_log.txt");
+
+    if (!outFile) {
+        cerr << "Error opening file for writing.\n";
+        return 1;
+    }
+
+    
+    const char* sensorData[] = {
+        "Sensor 1: 25.5 C\n",
+        "Sensor 2: 98.1 %RH\n"
+    };
+
+    streampos position;
+
+    for (int i = 0; i < 3; ++i) {
+        outFile << sensorData[i];
+        position = outFile.tellp();  
+        cout << "After writing line " << i + 1 << ", put pointer is at: " << position << "\n";
+    }
+
+    outFile.close();
+
+    return 0;
+}
