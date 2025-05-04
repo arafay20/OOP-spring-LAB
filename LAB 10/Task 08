@@ -1,0 +1,38 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main() {
+   
+    ofstream outFile("config.txt");
+    if (!outFile) {
+        cerr << "Error creating config.txt\n";
+        return 1;
+    }
+
+    outFile << "AAAAABBBBBCCCCC"; 
+    outFile.close();
+
+    
+    fstream file("config.txt", ios::in | ios::out);
+    if (!file) {
+        cerr << "Error opening config.txt for updating\n";
+        return 1;
+    }
+
+  
+    file.seekp(5);
+    file << "XXXXX";
+
+  
+    file.seekg(0);
+
+    
+    string updatedContent;
+    getline(file, updatedContent);
+    cout << "Updated file content: " << updatedContent << endl;
+
+    file.close();
+    return 0;
+}
