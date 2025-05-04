@@ -1,0 +1,78 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+
+class InventoryItem {
+private:
+    int itemID;
+    char itemName[20];
+
+public:
+   
+    InventoryItem(int id = 0, const char* name = "") {
+        setItemID(id);
+        setItemName(name);
+    }
+
+    
+    void setItemID(int id) {
+        itemID = id;
+    }
+
+    void setItemName(const char* name) {
+        std::strncpy(itemName, name, sizeof(itemName));
+        itemName[sizeof(itemName) - 1] = '\0';
+    }
+
+    
+    int getItemID() const {
+        return itemID;
+    }
+
+    const char* getItemName() const {
+        return itemName;
+    }
+
+    
+    void writeToFile(const char* filename) const {
+        std::ofstream outFile(filename, std::ios::binary);
+        if (outFile) {
+            outFile.write(reinterpret_cast<const char*>(this), sizeof(InventoryItem));
+            outFile.close();
+        } else {
+            std::cerr << "Error opening file for writing.\n";
+        }
+    }
+
+   
+    void readFromFile(const char* filename) {
+        std::ifstream inFile(filename, std::ios::binary);
+        if (inFile) {
+            inFile.read(reinterpret_cast<char*>(this), sizeof(InventoryItem));
+            inFile.close();
+        } else {
+            std::cerr << "Error opening file for reading.\n";
+        }
+    }
+
+   
+    void display() const {
+        std::cout << "Item ID: " << itemID << "\n";
+        std::cout << "Item Name: " << itemName << "\n";
+    }
+};
+
+int main() {
+
+    InventoryItem itemOut(101, "Tripod");
+    itemOut.writeToFile("inventory.dat");
+
+    
+    InventoryItem itemIn;
+    itemIn.readFromFile("inventory.dat");
+
+ 
+    itemIn.display();
+
+    return 0;
+}
