@@ -1,0 +1,28 @@
+#include<iostream>
+#include<fstream>
+#include<cstring>
+using namespace std;
+
+
+int main () {
+	
+	ifstream ifile("vehicles.txt");
+	
+	string line;
+	
+	if(ifile.is_open()) {
+		
+		while(getline(ifile, line)){
+			
+			cout << line <<endl;
+		}
+		
+		ifile.close();
+	}else {
+		cout <<"enable to open the file" <<endl;
+	}
+	
+	
+	
+	return 0;
+}
