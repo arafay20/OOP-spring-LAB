@@ -1,6 +1,6 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
+#include <sstream>   
 #include <string>
 using namespace std;
 
@@ -8,77 +8,71 @@ int main() {
     ifstream ifile("vehicles.txt");
     string line;
 
-    if (!ifile.is_open()) {
-        cout << "Unable to open the file" << endl;
-        return 1;
-    }
-
-    while (getline(ifile, line)) {
-        if (line.empty() || line[0] == '#') continue;
-
-        if (line.find("Type,ID") != string::npos) continue;
-
-        istringstream iss(line);
-        string type, id, name, yearStr, extraData, certification;
-
-        getline(iss, type, ',');
-        getline(iss, id, ',');
-        getline(iss, name, ',');
-        getline(iss, yearStr, ',');
-        getline(iss, extraData, ',');
-        getline(iss, certification, ',');
-
+    if (ifile.is_open()) {
+        while (getline(ifile, line)) {
        
-        int year = 0;
-        try {
-            year = stoi(yearStr);
-        } catch (...) {
-            cout << "ID: " << id << " - Invalid year" << endl;
-            continue;
-        }
+            if (line.empty() || line[0] == '/')
+                continue;
 
-        try {
-            if (type == "AutonomousCar") {
-             
-                size_t colonPos = extraData.find(':');
-                if (colonPos != string::npos) {
-                    string versionStr = extraData.substr(colonPos + 1);
-                    float version = stof(versionStr);
-                    cout << "ID: " << id << ", Software Version: " << version << endl;
-                }
-            } else if (type == "ElectricVehicle") {
+          
+            istringstream iss(line);
+
            
-                size_t colonPos = extraData.find(':');
-                if (colonPos != string::npos) {
-                    string batteryStr = extraData.substr(colonPos + 1);
-                    int battery = stoi(batteryStr);
-                    cout << "ID: " << id << ", Battery Capacity: " << battery << endl;
-                }
-            } else if (type == "HybridTruck") {
-                // Format: Cargo:5000|Battery:75
-                size_t cargoPos = extraData.find("Cargo:");
-                size_t pipePos = extraData.find('|');
-                size_t batteryPos = extraData.find("Battery:");
+            string type, id, name, yearStr, extraData, certification;
 
-                if (cargoPos != string::npos && pipePos != string::npos && batteryPos != string::npos) {
-                    string cargoStr = extraData.substr(cargoPos + 6, pipePos - (cargoPos + 6));
-                    string batteryStr = extraData.substr(batteryPos + 8);
-
-                    int cargo = stoi(cargoStr);
-                    int battery = stoi(batteryStr);
-
-                    cout << "ID: " << id << ", Cargo: " << cargo << ", Battery: " << battery << endl;
-                } else {
-                    cout << "ID: " << id << " - Malformed HybridTruck ExtraData" << endl;
-                }
-            } else {
-                cout << "ID: " << id << ", Unknown Type: " << type << endl;
+         
+            getline(iss, type, ',');
+            getline(iss, id, ',');
+            getline(iss, name, ',');
+            getline(iss, yearStr, ',');
+            getline(iss, extraData, ',');
+            getline(iss, certification, ',');
+            
+            
+            int saal = stoi(yearStr);
+            cout << "year(int) : " << saal <<endl;
+            
+            if(type == "AutonomousCar" || type == "ElectricVehicle") {
+            	
+            	size_t pos = line.find(":");
+            	size_t end = line.find(",", pos);
+            	
+             	if(pos!= string::npos){
+            	string num = line.substr(pos +1, end- pos-1);
+            	
+            	float numm = stof(num);
+            	
+            	cout << "Vehicle id :" << id << endl <<  "number after colon : " << numm << endl;
+				}
             }
-        } catch (...) {
-            cout << "ID: " << id << " - Error parsing ExtraData" << endl;
+            else if (type == "HybridTruck") {
+            	size_t pos = line.find(":");
+            	size_t end = line.find("|", pos);
+            	
+            	if(pos!= string::npos){
+            	string num = line.substr(pos +1, end- pos-1);
+            	
+            	int numm = stoi(num);
+            	
+            	cout << "Cargo :" << numm << endl;
+				}
+				
+				size_t pos1 = line.find(":", end);
+            	size_t end1 = line.find(",", pos1);
+            	if(pos!= string::npos){
+            	string nun = line.substr(pos1 +1, end1- pos1-1);
+            	
+            	int numn = stoi(nun);
+            	
+            	cout << "Battery :" << numn << endl;
+				}
+			}
         }
+
+        ifile.close();
+    } else {
+        cout << "Unable to open the file" << endl;
     }
 
-    ifile.close();
     return 0;
 }
